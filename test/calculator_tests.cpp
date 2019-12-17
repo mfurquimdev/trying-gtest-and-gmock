@@ -3,7 +3,7 @@
 
 #include "calculator.h"
 
-TEST( CalculatorAdd, AddTwoIntegersReturnAnInteger )
+TEST( Calculator, AddTwoIntegersReturnAnInteger )
 {
 	Calculator calc;
 
@@ -12,11 +12,24 @@ TEST( CalculatorAdd, AddTwoIntegersReturnAnInteger )
 	ASSERT_EQ( 5, result );
 }
 
-TEST( CalculatorAdd, DISABLED_AddTwoNumbersReturnWrongResult )
+TEST( Calculator, DISABLED_AddTwoNumbersReturnWrongResult )
 {
 	Calculator calc;
 
 	int result = calc.Add( 2, 2 );
 
 	ASSERT_EQ( 6, result );
+}
+
+TEST( Calculator, FirstIntegerIsLessThanSecondInteger )
+{
+	Calculator calc;
+
+	int a = 2;
+	int b = 3;
+
+	bool result = calc.LessThan( a, b );
+
+	EXPECT_LT( a, b );
+	ASSERT_TRUE( result );
 }

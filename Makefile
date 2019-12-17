@@ -65,10 +65,10 @@ $(TARGET): $(OBJ)
 	@echo Linking $@
 	$(CC) -o $@ $(OBJ) $(LIB) $(LFLAGS)
 
-run:
+run: all
 	$(TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0
 
-disabled:
+disabled: all
 	$(TARGET) --gtest_also_run_disabled_tests
 
 clean:
