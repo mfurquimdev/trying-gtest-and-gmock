@@ -39,7 +39,7 @@ LFLAGS= -lgtest -lgtest_main -lgmock
 
 TARGET=$(BIN_DIR)/$(NAME)
 
-.PHONY: clean all dirs
+.PHONY: clean all dirs run
 
 all: dirs
 	@echo
@@ -64,6 +64,12 @@ $(TARGET): $(OBJ)
 	@echo
 	@echo Linking $@
 	$(CC) -o $@ $(OBJ) $(LIB) $(LFLAGS)
+
+run:
+	$(TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0
+
+disabled:
+	$(TARGET) --gtest_also_run_disabled_tests
 
 clean:
 	@echo Cleaning...
