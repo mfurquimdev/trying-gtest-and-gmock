@@ -2,9 +2,9 @@
 
 #include "knight.h"
 
-TEST(SuiteTestName, TestName)
+TEST(FixtureName, TestName)
 {
 	Knight knight;
 
-	ASSERT_EQ("Ni!", knight.Say());
+	EXPECT_EQ("Ni!", knight.Say());
 }
