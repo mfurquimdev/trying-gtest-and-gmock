@@ -20,11 +20,13 @@ SRC_DIR=./src
 OBJ_DIR=./obj
 INC_DIR=./inc
 BIN_DIR=./bin
+TEST_DIR=./test
 
 #-------------------------------------------------------------------------------
 # C, Header, Object and Mapping Files
 #-------------------------------------------------------------------------------
 SRC = ${wildcard $(SRC_DIR)/*.cpp}
+SRC+= ${wildcard $(TEST_DIR)/*.cpp}
 OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 INC = -I$(INC_DIR)
 
@@ -49,6 +51,11 @@ dirs:
 	@mkdir -vp $(BIN_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	@echo
+	@echo Building $@
+	$(CC) -c $^ -o $@ $(CFLAGS) $(INC)
+
+$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
 	@echo
 	@echo Building $@
 	$(CC) -c $^ -o $@ $(CFLAGS) $(INC)

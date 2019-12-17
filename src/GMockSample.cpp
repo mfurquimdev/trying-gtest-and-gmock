@@ -7,8 +7,3 @@ int main( int argc, char** argv )
 
 	return RUN_ALL_TESTS();
 }
-
-TEST(ThisIsTheSuite, ThisIsTheTest)
-{
-	ASSERT_EQ( 4, 2+2 );
-}
