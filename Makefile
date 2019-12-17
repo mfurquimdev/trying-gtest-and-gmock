@@ -16,10 +16,10 @@ NAME := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 #-------------------------------------------------------------------------------
 # Diretórios
 #-------------------------------------------------------------------------------
-SRC_DIR=.
+SRC_DIR=./src
 OBJ_DIR=./obj
-INC_DIR=.
-BIN_DIR=.
+INC_DIR=./inc
+BIN_DIR=./bin
 
 #-------------------------------------------------------------------------------
 # C, Header, Object and Mapping Files
@@ -46,6 +46,7 @@ all: dirs
 
 dirs:
 	@mkdir -vp $(OBJ_DIR)
+	@mkdir -vp $(BIN_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo
@@ -59,6 +60,6 @@ $(TARGET): $(OBJ)
 
 clean:
 	@echo Cleaning...
-	rm -rvf $(OBJ_DIR) $(TARGET)
+	rm -rvf $(OBJ_DIR) $(BIN_DIR)
 
 .PRECIOUS: %.o
