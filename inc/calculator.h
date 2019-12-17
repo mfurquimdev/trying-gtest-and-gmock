@@ -7,6 +7,7 @@ public:
 	int Add( int, int );
 	bool LessThan( int, int );
 	static bool GreaterThan( int, int );
+	static bool IsOddNumber( int );
 };
 
 #endif

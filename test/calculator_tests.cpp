@@ -47,3 +47,10 @@ TEST( Calculator, ComparingTwoIntegersPredicate )
 
 	ASSERT_PRED2( Calculator::GreaterThan, a, b );
 }
+
+TEST( Calculator, VerifyingWhetherNumberIsOdd )
+{
+	int a = 4;
+
+	EXPECT_PRED1( Calculator::IsOddNumber, a );
+}
