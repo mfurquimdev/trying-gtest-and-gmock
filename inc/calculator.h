@@ -6,6 +6,7 @@ class Calculator
 public:
 	int Add( int, int );
 	bool LessThan( int, int );
+	static bool GreaterThan( int, int );
 };
 
 #endif

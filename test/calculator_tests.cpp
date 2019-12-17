@@ -20,7 +20,15 @@ TEST( Calculator, DISABLED_AddTwoNumbersReturnWrongResult )
 	ASSERT_EQ( 6, result );
 }
 
-TEST( Calculator, FirstIntegerIsLessThanSecondInteger )
+TEST( Calculator, ComparingTwoIntegersLessThan )
+{
+	int a = 2;
+	int b = 3;
+
+	EXPECT_LT( a, b );
+}
+
+TEST( Calculator, ComparingTwoIntegersBoolean )
 {
 	Calculator calc;
 
@@ -29,6 +37,13 @@ TEST( Calculator, FirstIntegerIsLessThanSecondInteger )
 
 	bool result = calc.LessThan( a, b );
 
-	EXPECT_LT( a, b );
 	ASSERT_TRUE( result );
+}
+
+TEST( Calculator, ComparingTwoIntegersPredicate )
+{
+	int a = 3;
+	int b = 2;
+
+	ASSERT_PRED2( Calculator::GreaterThan, a, b );
 }

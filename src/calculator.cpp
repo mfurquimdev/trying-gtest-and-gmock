@@ -11,3 +11,9 @@ Calculator::LessThan( int a, int b )
 {
 	return a < b;
 }
+
+bool
+Calculator::GreaterThan( int a, int b )
+{
+	return a > b;
+}
