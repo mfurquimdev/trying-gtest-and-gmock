@@ -54,3 +54,39 @@ TEST( Calculator, VerifyingWhetherNumberIsOdd )
 
 	EXPECT_PRED1( Calculator::IsOddNumber, a );
 }
+
+struct CalculatorTestRow
+{
+	CalculatorTestRow( int input, bool expected ) : input(input), expected(expected)
+	{
+	}
+
+	int input;
+	bool expected;
+};
+
+::std::ostream& operator<<( ::std::ostream& os, const CalculatorTestRow& row )
+{
+	return os << "Input: " << row.input << " expected result: " << row.expected;
+}
+
+class CalculatorTests : public ::testing::TestWithParam< CalculatorTestRow >
+{
+};
+
+TEST_P( CalculatorTests, VariousNumbersAreOdd )
+{
+	auto row = GetParam();
+
+	auto result = Calculator::IsOddNumber( row.input );
+
+	ASSERT_EQ( row.expected, result );
+}
+
+INSTANTIATE_TEST_CASE_P( NumberIsOdd, CalculatorTests,
+	::testing::Values(
+		CalculatorTestRow( 2, true ),
+		CalculatorTestRow( 3, false ),
+		CalculatorTestRow( 4, true )
+	)
+);
