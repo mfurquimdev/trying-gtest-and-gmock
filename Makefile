@@ -34,10 +34,11 @@ TEST_SRC = ${wildcard $(TEST_SRC_DIR)/*.cpp}
 
 MAIN_OBJ = ${addprefix $(MAIN_OBJ_DIR)/, ${notdir ${MAIN_SRC:.cpp=.o}}}
 TEST_OBJ = ${addprefix $(TEST_OBJ_DIR)/, ${notdir ${TEST_SRC:.cpp=.o}}}
-TEST_OBJ:= $(MAIN_OBJ)
 
-MAIN_FUNC_OBJ = ${addprefix $(MAIN_OBJ_DIR)/, main.o}
-TEST_OBJ:= $(filter-out $(MAIN_FUNC_OBJ), $(TEST_OBJ))
+
+# Gato, não estava funcionando de outra forma
+MAIN_O = ${addprefix $(MAIN_OBJ_DIR)/, main.o}
+TEST_MAIN_OBJ = $(filter-out $(MAIN_O), $(MAIN_OBJ))
 
 MAIN_INC = -I$(MAIN_INC_DIR)
 TEST_INC = -I$(TEST_INC_DIR) $(MAIN_INC) 
@@ -96,7 +97,7 @@ $(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.cpp
 $(TEST_TARGET): $(TEST_OBJ)
 	@echo
 	@echo Linking $@
-	$(CC) -o $@ $(TEST_OBJ) $(LIB) $(LFLAGS)
+	$(CC) -o $@ $(TEST_OBJ) $(TEST_MAIN_OBJ) $(LIB) $(LFLAGS)
 
 
 
