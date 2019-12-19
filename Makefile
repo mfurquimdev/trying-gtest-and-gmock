@@ -29,14 +29,18 @@ BIN_DIR=./bin
 #-------------------------------------------------------------------------------
 # C, Header, Object and Mapping Files
 #-------------------------------------------------------------------------------
-SRC_MAIN = ${wildcard $(MAIN_SRC_DIR)/*.cpp}
-SRC_TEST = ${wildcard $(TEST_SRC_DIR)/*.cpp}
+MAIN_SRC = ${wildcard $(MAIN_SRC_DIR)/*.cpp}
+TEST_SRC = ${wildcard $(TEST_SRC_DIR)/*.cpp}
 
-OBJ_MAIN = ${addprefix $(MAIN_OBJ_DIR)/, ${notdir ${SRC_MAIN:.cpp=.o}}}
-OBJ_TEST = ${addprefix $(TEST_OBJ_DIR)/, ${notdir ${SRC_TEST:.cpp=.o}}}
+MAIN_OBJ = ${addprefix $(MAIN_OBJ_DIR)/, ${notdir ${MAIN_SRC:.cpp=.o}}}
+TEST_OBJ = ${addprefix $(TEST_OBJ_DIR)/, ${notdir ${TEST_SRC:.cpp=.o}}}
+TEST_OBJ:= $(MAIN_OBJ)
 
-INC_MAIN = -I$(MAIN_INC_DIR)
-INC_TEST = -I$(TEST_INC_DIR)
+MAIN_FUNC_OBJ = ${addprefix $(MAIN_OBJ_DIR)/, main.o}
+TEST_OBJ:= $(filter-out $(MAIN_FUNC_OBJ), $(TEST_OBJ))
+
+MAIN_INC = -I$(MAIN_INC_DIR)
+TEST_INC = -I$(TEST_INC_DIR) $(MAIN_INC) 
 
 #-------------------------------------------------------------------------------
 # Compilador, flags e bibliotecas
@@ -48,7 +52,9 @@ LFLAGS= -lgtest -lgtest_main -lgmock
 MAIN_TARGET=$(BIN_DIR)/$(NAME)
 TEST_TARGET=$(BIN_DIR)/$(NAME)_test
 
-.PHONY: clean all dirs run
+.PHONY: clean all main test main_dirs test_dirs run run_test run_disabled
+
+all: main test
 
 main: main_dirs
 	@echo
@@ -58,6 +64,17 @@ main: main_dirs
 main_dirs:
 	@mkdir -vp $(BIN_DIR)
 	@mkdir -vp $(MAIN_OBJ_DIR)
+
+$(MAIN_OBJ_DIR)/%.o: $(MAIN_SRC_DIR)/%.cpp
+	@echo
+	@echo Building $@
+	$(CC) -c $^ -o $@ $(CFLAGS) $(MAIN_INC)
+
+$(MAIN_TARGET): $(MAIN_OBJ)
+	@echo
+	@echo Linking $@
+	$(CC) -o $@ $(MAIN_OBJ) $(LIB) $(LFLAGS)
+
 
 
 
@@ -71,29 +88,34 @@ test: test_dirs
 test_dirs: main_dirs
 	@mkdir -vp $(TEST_OBJ_DIR)
 
-$(OBJ_DIR)/%.o: $(MAIN_DIR)$(SRC_DIR)/%.cpp
+$(TEST_OBJ_DIR)/%.o: $(TEST_SRC_DIR)/%.cpp
 	@echo
 	@echo Building $@
-	$(CC) -c $^ -o $@ $(CFLAGS) $(INC)
+	$(CC) -c $^ -o $@ $(CFLAGS) $(TEST_INC)
 
-$(OBJ_DIR)/%.o: $(TEST_DIR)$(SRC_DIR/%.cpp
-	@echo
-	@echo Building $@
-	$(CC) -c $^ -o $@ $(CFLAGS) $(INC)
-
-$(TARGET): $(OBJ)
+$(TEST_TARGET): $(TEST_OBJ)
 	@echo
 	@echo Linking $@
-	$(CC) -o $@ $(OBJ) $(LIB) $(LFLAGS)
+	$(CC) -o $@ $(TEST_OBJ) $(LIB) $(LFLAGS)
+
+
+
+
+
+
+
 
 run:
-	$(TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0
+	$(MAIN_TARGET)
 
-disabled:
-	$(TARGET) --gtest_also_run_disabled_tests
+run_test:
+	$(TEST_TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0
+
+run_disabled:
+	$(TEST_TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0 --gtest_also_run_disabled_tests
 
 clean:
 	@echo Cleaning...
-	rm -rvf $(OBJ_DIR) $(BIN_DIR)
+	rm -rvf $(MAIN_OBJ_DIR) $(TEST_OBJ_DIR) $(BIN_DIR)
 
 .PRECIOUS: %.o
