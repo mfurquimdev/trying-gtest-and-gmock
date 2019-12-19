@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
 
 #include "knight.h"
+#include "vocabulary_mock.h"
 
-TEST(FixtureName, TestName)
+TEST(KnightTests, TestingHisLoyalty)
 {
 	Knight knight;
+	VocabularyMock vocabulary;
 
-	EXPECT_EQ("Ni!", knight.Say()) << "This is not a Knight, It's a Dothraki!!!";
+	EXPECT_EQ("Lo!", knight.Say(vocabulary)) << "This is not a Knight, It's a Dothraki!!!";
 }

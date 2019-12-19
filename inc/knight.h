@@ -1,12 +1,10 @@
-#ifndef __KNIGHT_H__
-#define __KNIGHT_H__
+#pragma once
 
-#include <string>
+#include "vocabulary.h"
 
 class Knight
 {
 public:
-	std::string Say();
+	std::string Say(Vocabulary&);
 };
 
-#endif

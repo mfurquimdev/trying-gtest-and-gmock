@@ -1,7 +1,9 @@
 #include "knight.h"
 
+#include "vocabulary.h"
+
 std::string
-Knight::Say()
+Knight::Say(Vocabulary& vocabulary)
 {
-	return "ekki-ekki-ekki-pitang-zoom-boing!";
+	return vocabulary.Word();
 }
