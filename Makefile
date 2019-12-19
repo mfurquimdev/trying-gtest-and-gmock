@@ -16,19 +16,27 @@ NAME := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))
 #-------------------------------------------------------------------------------
 # Diretórios
 #-------------------------------------------------------------------------------
-SRC_DIR=./src
-OBJ_DIR=./obj
-INC_DIR=./inc
+MAIN_SRC_DIR=./main/src
+MAIN_INC_DIR=./main/inc
+MAIN_OBJ_DIR=./main/obj
+
+TEST_SRC_DIR=./test/src
+TEST_INC_DIR=./test/inc
+TEST_OBJ_DIR=./test/obj
+
 BIN_DIR=./bin
-TEST_DIR=./test
 
 #-------------------------------------------------------------------------------
 # C, Header, Object and Mapping Files
 #-------------------------------------------------------------------------------
-SRC = ${wildcard $(SRC_DIR)/*.cpp}
-SRC+= ${wildcard $(TEST_DIR)/*.cpp}
-OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
-INC = -I$(INC_DIR)
+SRC_MAIN = ${wildcard $(MAIN_SRC_DIR)/*.cpp}
+SRC_TEST = ${wildcard $(TEST_SRC_DIR)/*.cpp}
+
+OBJ_MAIN = ${addprefix $(MAIN_OBJ_DIR)/, ${notdir ${SRC_MAIN:.cpp=.o}}}
+OBJ_TEST = ${addprefix $(TEST_OBJ_DIR)/, ${notdir ${SRC_TEST:.cpp=.o}}}
+
+INC_MAIN = -I$(MAIN_INC_DIR)
+INC_TEST = -I$(TEST_INC_DIR)
 
 #-------------------------------------------------------------------------------
 # Compilador, flags e bibliotecas
@@ -37,26 +45,38 @@ CC=g++
 CFLAGS= -Wall -Wextra -pedantic -ansi -std=c++11
 LFLAGS= -lgtest -lgtest_main -lgmock 
 
-TARGET=$(BIN_DIR)/$(NAME)
+MAIN_TARGET=$(BIN_DIR)/$(NAME)
+TEST_TARGET=$(BIN_DIR)/$(NAME)_test
 
 .PHONY: clean all dirs run
 
-all: dirs
+main: main_dirs
 	@echo
 	@echo Compiling...
-	$(MAKE) $(TARGET)
-	$(MAKE) run
+	$(MAKE) $(MAIN_TARGET)
 
-dirs:
-	@mkdir -vp $(OBJ_DIR)
+main_dirs:
 	@mkdir -vp $(BIN_DIR)
+	@mkdir -vp $(MAIN_OBJ_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+
+
+
+test: test_dirs
+	@echo
+	@echo Compiling Test...
+	$(MAKE) $(TEST_TARGET)
+	$(MAKE) run_test
+
+test_dirs: main_dirs
+	@mkdir -vp $(TEST_OBJ_DIR)
+
+$(OBJ_DIR)/%.o: $(MAIN_DIR)$(SRC_DIR)/%.cpp
 	@echo
 	@echo Building $@
 	$(CC) -c $^ -o $@ $(CFLAGS) $(INC)
 
-$(OBJ_DIR)/%.o: $(TEST_DIR)/%.cpp
+$(OBJ_DIR)/%.o: $(TEST_DIR)$(SRC_DIR/%.cpp
 	@echo
 	@echo Building $@
 	$(CC) -c $^ -o $@ $(CFLAGS) $(INC)
