@@ -45,6 +45,7 @@ all: dirs
 	@echo
 	@echo Compiling...
 	$(MAKE) $(TARGET)
+	$(MAKE) run
 
 dirs:
 	@mkdir -vp $(OBJ_DIR)
@@ -65,10 +66,10 @@ $(TARGET): $(OBJ)
 	@echo Linking $@
 	$(CC) -o $@ $(OBJ) $(LIB) $(LFLAGS)
 
-run: all
+run:
 	$(TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0
 
-disabled: all
+disabled:
 	$(TARGET) --gtest_also_run_disabled_tests
 
 clean:
