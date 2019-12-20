@@ -57,6 +57,10 @@ TEST_TARGET=$(BIN_DIR)/$(NAME)_test
 
 all: main test
 
+#-------------------------------------------------------------------------------
+# Main target compilation
+#-------------------------------------------------------------------------------
+
 main: main_dirs
 	@echo
 	@echo Compiling...
@@ -76,15 +80,14 @@ $(MAIN_TARGET): $(MAIN_OBJ)
 	@echo Linking $@
 	$(CC) -o $@ $(MAIN_OBJ) $(LIB) $(LFLAGS)
 
-
-
-
+#-------------------------------------------------------------------------------
+# Test target compilation
+#-------------------------------------------------------------------------------
 
 test: test_dirs
 	@echo
 	@echo Compiling Test...
 	$(MAKE) $(TEST_TARGET)
-	$(MAKE) run_test
 
 test_dirs: main_dirs
 	@mkdir -vp $(TEST_OBJ_DIR)
@@ -99,21 +102,22 @@ $(TEST_TARGET): $(TEST_OBJ)
 	@echo Linking $@
 	$(CC) -o $@ $(TEST_OBJ) $(TEST_MAIN_OBJ) $(LIB) $(LFLAGS)
 
+#-------------------------------------------------------------------------------
+# Executing
+#-------------------------------------------------------------------------------
 
-
-
-
-
-
-
-run:
+run: main
 	$(MAIN_TARGET)
 
-run_test:
+run_test: test
 	$(TEST_TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0
 
-run_disabled:
+run_disabled: test
 	$(TEST_TARGET) --gtest_color=yes --gtest_repeat=1 --gtest_shuffle --gtest_print_time=0 --gtest_also_run_disabled_tests
+
+#-------------------------------------------------------------------------------
+# Cleaning
+#-------------------------------------------------------------------------------
 
 clean:
 	@echo Cleaning...
