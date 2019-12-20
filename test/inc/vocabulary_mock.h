@@ -2,11 +2,11 @@
 
 #include "vocabulary.h"
 
+#include "gmock/gmock.h"
+
 class VocabularyMock : public Vocabulary
 {
 public:
-	std::string Word() override {
-		return "Lo!";
-	}
+	MOCK_METHOD0(Word, std::string());
 };
 
