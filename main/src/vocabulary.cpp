@@ -1,5 +1,13 @@
 #include "vocabulary.h"
 
+Vocabulary::Vocabulary()
+{
+}
+
+Vocabulary::~Vocabulary()
+{
+}
+
 std::string
 Vocabulary::Word()
 {

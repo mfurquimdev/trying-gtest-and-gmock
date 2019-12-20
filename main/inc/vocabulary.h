@@ -5,6 +5,9 @@
 class Vocabulary
 {
 public:
+	Vocabulary();
+	virtual ~Vocabulary();
+
 	virtual std::string Word();
 
 private:

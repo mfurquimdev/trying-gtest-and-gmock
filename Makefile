@@ -48,7 +48,7 @@ TEST_INC = -I$(TEST_INC_DIR) $(MAIN_INC)
 #-------------------------------------------------------------------------------
 CC=g++
 CFLAGS= -Wall -Wextra -pedantic -ansi -std=c++11
-LFLAGS= -lgtest -lgtest_main -lgmock 
+LFLAGS= -lgtest -lgtest_main -lgmock -lpthread 
 
 MAIN_TARGET=$(BIN_DIR)/$(NAME)
 TEST_TARGET=$(BIN_DIR)/$(NAME)_test
@@ -84,7 +84,7 @@ $(MAIN_TARGET): $(MAIN_OBJ)
 # Test target compilation
 #-------------------------------------------------------------------------------
 
-test: test_dirs
+test: test_dirs main
 	@echo
 	@echo Compiling Test...
 	$(MAKE) $(TEST_TARGET)
